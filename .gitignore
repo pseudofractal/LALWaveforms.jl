@@ -1,2 +1,6 @@
 # Nix
 .direnv/
+
+# Julia
+/docs/Manifest*.toml
+/docs/build/

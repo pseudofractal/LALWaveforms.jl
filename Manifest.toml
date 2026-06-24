@@ -1,0 +1,10 @@
+# This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.12.6"
+manifest_format = "2.0"
+project_hash = "e2f4ac948c203dc5da650256691815476a6f5a0e"
+
+[[deps.LALWaveforms]]
+path = "."
+uuid = "9206b829-cff4-4912-95d2-eb6a5e4d991b"
+version = "1.0.0-DEV"
