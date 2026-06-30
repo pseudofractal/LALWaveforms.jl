@@ -1,5 +1,5 @@
 {
-  description = "LALSimulation.jl";
+  description = "LALSimulation.jl: A Julia package for GW waveform generation and detector response built on top of LALSuite";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -7,9 +7,9 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
     flake-utils,
+    ...
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
@@ -23,11 +23,11 @@
             url = "http://software.igwn.org/lscsoft/source/lalsuite/${pname}-${version}.tar.xz";
             hash = "sha256-N6ar2hN+qDGb/01fMBitx5uwoAc0T4vVEqFBksz94Ss=";
           };
-          nativeBuildInputs = [pkgs.pkg-config pkgs.python3];
-          buildInputs = [pkgs.gsl pkgs.fftw pkgs.fftwFloat pkgs.hdf5 pkgs.zlib];
+          nativeBuildInputs = [pkgs.pkg-config];
+          buildInputs = [pkgs.gsl pkgs.fftw pkgs.fftwFloat pkgs.zlib];
           configureFlags = [
-            "--disable-python"
             "--disable-swig"
+            "--disable-python"
             "--with-hdf5=no"
           ];
         };
@@ -40,25 +40,39 @@
             url = "http://software.igwn.org/lscsoft/source/lalsuite/${pname}-${version}.tar.xz";
             hash = "sha256-SEYlwhiTQBOZryxfwIdRVp6ObCZdGNhZzGxEL7r/JrI=";
           };
-          nativeBuildInputs = [pkgs.pkg-config pkgs.python3];
-          buildInputs = [lal pkgs.gsl pkgs.fftw pkgs.fftwFloat pkgs.hdf5 pkgs.zlib];
+          nativeBuildInputs = [pkgs.pkg-config];
+          buildInputs = [lal pkgs.gsl pkgs.fftw pkgs.fftwFloat pkgs.zlib];
           configureFlags = [
-            "--disable-python"
             "--disable-swig"
+            "--disable-python"
           ];
+          propagatedBuildInputs = [lal];
+        };
+      in {
+        packages = {
+          inherit lal lalsimulation;
+          default = lalsimulation;
         };
 
-      in {
         devShells.default = pkgs.mkShell {
           buildInputs = [
             pkgs.julia
+            lal
             lalsimulation
+
+            # For testing required by `PythonCall`
+            pkgs.uv
+            pkgs.python311
           ];
 
           shellHook = ''
             export LD_LIBRARY_PATH="${lal}/lib:${lalsimulation}/lib:$LD_LIBRARY_PATH"
             echo "LAL Core compiled at: ${lal}"
             echo "LALSimulation compiled at: ${lalsimulation}"
+
+            # For testing required by `PythonCall`
+            export JULIA_PYTHONCALL_EXE="/home/pseudofractal/GitHub/LALWaveforms.jl/test/.venv/bin/python"
+            export JULIA_CONDAPKG_BACKEND="Null"
           '';
         };
       }

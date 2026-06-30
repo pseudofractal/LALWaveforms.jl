@@ -4,3 +4,6 @@
 # Julia
 /docs/Manifest*.toml
 /docs/build/
+
+# Python venv
+.venv/

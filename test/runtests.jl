@@ -1,6 +1,7 @@
-using LALWaveforms
-using Test
+include("common.jl")
 
 @testset "LALWaveforms.jl" begin
-    # Write your tests here.
+  include("waveforms.jl")
+  include("detectors.jl")
+  include("pipeline.jl")
 end

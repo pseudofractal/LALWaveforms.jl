@@ -1,7 +1,10 @@
 name = "LALWaveforms"
 uuid = "9206b829-cff4-4912-95d2-eb6a5e4d991b"
+version = "0.1.0"
 authors = ["pseudofractal"]
-version = "1.0.0-DEV"
+
+[workspace]
+projects = ["docs"]
 
 [compat]
 julia = "1.10.10"
