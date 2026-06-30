@@ -4,10 +4,10 @@ CurrentModule = LALWaveforms
 
 # LALWaveforms
 
-Documentation for [LALWaveforms](https://github.com/pseudofractal/LALWaveforms.jl).
+LALWaveforms.jl is a Julia package for gravitational-wave waveform generation
+and detector response calculations built on top of LALSuite.
 
-```@index
-```
+Documentation is WIP.
 
 ```@autodocs
 Modules = [LALWaveforms]
